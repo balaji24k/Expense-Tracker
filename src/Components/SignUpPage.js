@@ -1,6 +1,7 @@
-import { Button, Form } from "react-bootstrap";
+import { Button, Form, Nav } from "react-bootstrap";
 import React, { useRef } from "react";
-import classes from "./SignUp.module.css";
+import classes from "./SignUpPage.module.css";
+import { NavLink } from "react-router-dom";
 
 const SignUpPage = () => {
   const emailInpurRef = useRef();
@@ -88,13 +89,15 @@ const SignUpPage = () => {
           <Button variant="success pl-2" type="submit">
             Create Account
           </Button>
-          <Button
-            style={{ marginLeft: "2rem" }}
-            className=" btn-outline-succes "
-          >
-            Have a Account?
-          </Button>
         </div>
+        <Nav>
+          <NavLink
+            to="/LoginPage"
+            style={{ color: "white", paddingTop: "1rem" }}
+          >
+            Have an Account?
+          </NavLink>
+        </Nav>
       </Form>
     </section>
   );
