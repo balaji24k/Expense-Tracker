@@ -6,6 +6,7 @@ import AfterLogin from './Components/AfterLogin';
 import FirstPageDetails from "./Components/FirstPage";
 import CompleteProfile from "./Components/CompleteProfile";
 import VerificationPage from './Components/Verificationpage';
+import AddExpenseDetails from './Components/AddExpenses';
 // import AuthContext from './Store/AuthContext';
 // import { useContext } from 'react';
 
@@ -33,6 +34,9 @@ function App() {
         </Route>
         <Route exact path="/verify-email">
           <VerificationPage/>
+        </Route>
+        <Route exact path="/AddExpenseDetails">
+          <AddExpenseDetails/>
         </Route>
       </Switch>
     </Router>

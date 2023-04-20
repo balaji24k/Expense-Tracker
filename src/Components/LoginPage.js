@@ -99,7 +99,7 @@ const LoginPage = () => {
       }).then((data) => {
         console.log(data);
         authCtx.login(data.idToken, enteredEmail);
-        history.replace("/verify-email");
+        history.replace("/AddExpenseDetails");
       })
       .catch((err) => {
         alert(err.message);
