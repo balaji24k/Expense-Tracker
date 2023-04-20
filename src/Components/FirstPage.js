@@ -15,13 +15,13 @@ const FirstPageDetails = () => {
 
 
   return (
-    <Navbar
+    <Navbar style={{marginTop : "450px"}}
       bg="white"
       expand="lg"
       variant="light"
       className="border border-white mt-2 "
     >
-      <Navbar.Brand style={{ fontSize: "xx-large", marginLeft: "2rem" }}>
+      <Navbar.Brand style={{ fontSize: "xx-large", marginLeft: "2rem"}}>
         ExpenseTracker App
       </Navbar.Brand>
       <Container className="justify-content-center ">
@@ -39,7 +39,7 @@ const FirstPageDetails = () => {
           )}
           {authCtx.isLoggedIn && (
             <NavLink
-              to="/"
+              to="/LoginPage"
               className={classes.font}
               style={{ color: "Red" }}
               onClick={logout}

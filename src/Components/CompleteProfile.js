@@ -1,9 +1,53 @@
-import React, { useRef } from "react";
+import React, { useRef, useEffect } from "react";
 import { Form, Button } from "react-bootstrap";
 
 const CompleteProfile = () => {
   const name = useRef();
   const photoUrl = useRef();
+
+  useEffect(() => {
+    // console.log(localStorage.getItem("token"),"after refreshed");
+    fetch(
+      "https://identitytoolkit.googleapis.com/v1/accounts:lookup?key=AIzaSyBO-uWvkbDxYCjipLzXz0ZulQvNenR57ww",
+      {
+        method: "POST",
+        body: JSON.stringify({
+          idToken: localStorage.getItem("token"),
+        }),
+        headers: {
+          "Content-Type": "application/json",
+        },
+      }
+    )
+      .then((res) => {
+        if (res.ok) {
+          console.log("Received the users details from the Firebase server");
+          console.log(res);
+          return res.json();
+        } else {
+          return res.json().then((data) => {
+            console.log(data,"data im else");
+            let errorMessage = "Updation failed filed!";
+            if (data && data.error && data.error.message) {
+              errorMessage = data.error.message;
+            }
+            console.log(errorMessage,"error");
+          });
+        }
+      })
+      .then((data) => {
+        console.log(data)
+        // console.log(data.users[0].displayName,"afterRefreshed");
+        // console.log(data.users[0].photoUrl);
+        name.current.value = data.users[0].displayName; //if we use useState then we write "setState"for functionality & for useRef we use this line for functionality.
+        photoUrl.current.value = data.users[0].photoUrl;
+        // console.log(data.displayName);
+      })
+      .catch((err) => {
+        alert(err.message);
+      });
+  }, []);
+
 
   const submitHandler = (e) => {
     e.preventDefault();
@@ -33,7 +77,9 @@ const CompleteProfile = () => {
             },
           }
         )
+        
           .then((res) => {
+            console.log("posted");
             if (res.ok) {
               console.log("Sent succesful");
               alert("Update succesful");
@@ -41,8 +87,8 @@ const CompleteProfile = () => {
               return res.json();
             } else {
               return res.json().then((data) => {
-                console.log(data);
-                let errorMessage = "Updation failed filed!";
+                console.log(data,"insideCompleteProfile");
+                let errorMessage = "Updation failed failed!";
                 if (data && data.error && data.error.message) {
                   errorMessage = data.error.message;
                 }
@@ -59,7 +105,6 @@ const CompleteProfile = () => {
       }
     }
   
-
   return (
     <Form onSubmit={submitHandler} className="container mt-5">
       <h2 className="text-center text-white">Update profile</h2>

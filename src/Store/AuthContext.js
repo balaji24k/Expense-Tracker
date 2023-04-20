@@ -31,9 +31,10 @@ export const AuthContextProvider = (props) => {
     alert("Logged out succesfull");
   };
 
-  const loginHandler = (token) => {
+  const loginHandler = (token,email) => {
     setToken(token);
     localStorage.setItem("token", token);
+    localStorage.setItem("email", email);
     setUserIsLoggedIn(true);
   };
 
