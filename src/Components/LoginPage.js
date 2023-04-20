@@ -2,7 +2,7 @@ import React, { useContext } from "react";
 import classes from "./LoginPage.module.css";
 import { Button, Form, Nav } from "react-bootstrap";
 import { useRef, useState} from "react";
-import { Link, NavLink, useHistory } from "react-router-dom";
+import { NavLink, useHistory } from "react-router-dom";
 import AuthContext from "../Store/AuthContext";
 
 const LoginPage = () => {
@@ -10,17 +10,58 @@ const LoginPage = () => {
 
   
   const history = useHistory();
-  const emailInpurRef = useRef();
+  const emailInputRef = useRef();
   const passwordInputRef = useRef();
 
-  const [login, setLogin] = useState(true);
+  const [login, setLogin] = useState(false);
+
+  const ForgotPasswordHandler = () => {
+    alert("you may have received an email with reset link");
+    console.log(emailInputRef.current.value);
+
+    fetch(
+      "https://identitytoolkit.googleapis.com/v1/accounts:sendOobCode?key=AIzaSyBO-uWvkbDxYCjipLzXz0ZulQvNenR57ww",
+      {
+        method: "POST",
+        body: JSON.stringify({
+          requestType: "PASSWORD_RESET",
+          email: emailInputRef.current.value,
+        }),
+        headers: {
+          "Content-Type": "application/json",
+        },
+      }
+    )
+      .then((res) => {
+        if (res.ok) {
+          console.log("Login succesfullly");
+          console.log(res);
+          return res.json();
+        } else {
+          return res.json().then((data) => {
+            console.log(data);
+            let errorMessage = "Email sent for reset password";
+            if (data && data.error && data.error.message) {
+              errorMessage = data.error.message;
+            }
+            throw new Error(errorMessage);
+          });
+        }
+      })
+      .then((data) => {
+        console.log(data);
+      })
+      .catch((err) => {
+        alert(err.message);
+      });
+  };
 
   const submitHandler = (event) => {
     event.preventDefault();
-    setLogin(false);
+    setLogin(true);
     authCtx.login();
 
-    const enteredEmail = emailInpurRef.current.value;
+    const enteredEmail = emailInputRef.current.value;
     const enteredPassword = passwordInputRef.current.value;
 
     if (enteredEmail === "" || enteredPassword === "") {
@@ -62,6 +103,7 @@ const LoginPage = () => {
       })
       .catch((err) => {
         alert(err.message);
+        setLogin(false);
       });;
     }
   };
@@ -72,7 +114,7 @@ const LoginPage = () => {
       <Form onSubmit={submitHandler}>
         <Form.Group className="mb-3">
           <Form.Label style={{ color: "white" }}>Email</Form.Label>
-          <Form.Control type="text" placeholder="Email" ref={emailInpurRef} />
+          <Form.Control type="text" placeholder="Email" ref={emailInputRef} />
         </Form.Group>
         <Form.Group className="mb-3">
           <Form.Label style={{ color: "white" }}>Password</Form.Label>
@@ -84,15 +126,18 @@ const LoginPage = () => {
         </Form.Group>
 
         <div>
-          {login ? (
+          {!login ? (
               <Button variant="success pl-2" type="submit">
                 Login
               </Button>) : (
               <p style={{ color: "white" }}>Loading...</p>
           )}
-          <Link to={"/"} style={{ color: "white", paddingLeft: "2rem" }}>
-            forgot password?
-          </Link>
+          <Button
+            onClick={ForgotPasswordHandler}
+            style={{ color: "white", marginLeft: "1rem", padding: "0.1rem" }}
+          >
+            Forgot Password?
+          </Button>
         </div>
         <Nav>
           <NavLink to={"/"} style={{ color: "white", paddingTop: "1rem" }}>
