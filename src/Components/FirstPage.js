@@ -39,7 +39,7 @@ const FirstPageDetails = () => {
           )}
           {authCtx.isLoggedIn && (
             <NavLink
-              to="/LoginPage"
+              to="/Home"
               className={classes.font}
               style={{ color: "Red" }}
               onClick={logout}

@@ -28,7 +28,7 @@ function App() {
         <Route  exact path="/completeProfile">
           <CompleteProfile/> 
         </Route>
-        <Route exact path="/">
+        <Route exact path="/Home">
           <Redirect to={"/LoginPage"} />
         </Route>
         <Route exact path="/verify-email">
