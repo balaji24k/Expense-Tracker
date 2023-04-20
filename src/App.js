@@ -5,6 +5,7 @@ import LoginPage from './Components/LoginPage';
 import AfterLogin from './Components/AfterLogin';
 import FirstPageDetails from "./Components/FirstPage";
 import CompleteProfile from "./Components/CompleteProfile";
+import VerificationPage from './Components/Verificationpage';
 // import AuthContext from './Store/AuthContext';
 // import { useContext } from 'react';
 
@@ -29,6 +30,9 @@ function App() {
         </Route>
         <Route exact path="/">
           <Redirect to={"/LoginPage"} />
+        </Route>
+        <Route exact path="/verify-email">
+          <VerificationPage/>
         </Route>
       </Switch>
     </Router>

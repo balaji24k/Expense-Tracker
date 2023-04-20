@@ -58,7 +58,7 @@ const LoginPage = () => {
       }).then((data) => {
         console.log(data);
         authCtx.login(data.idToken, enteredEmail);
-        history.replace("/WelcomePage");
+        history.replace("/verify-email");
       })
       .catch((err) => {
         alert(err.message);
