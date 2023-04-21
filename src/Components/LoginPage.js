@@ -140,7 +140,7 @@ const LoginPage = () => {
           </Button>
         </div>
         <Nav>
-          <NavLink to={"/"} style={{ color: "white", paddingTop: "1rem" }}>
+          <NavLink to={"/SignupPage"} style={{ color: "white", paddingTop: "1rem" }}>
             Don't have an Account?
           </NavLink>
         </Nav>

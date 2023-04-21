@@ -7,11 +7,11 @@ import FirstPageDetails from "./Components/FirstPage";
 import CompleteProfile from "./Components/CompleteProfile";
 import VerificationPage from './Components/Verificationpage';
 import AddExpenseDetails from './Components/AddExpenses';
-// import AuthContext from './Store/AuthContext';
-// import { useContext } from 'react';
+import AuthContext from './Store/AuthContext';
+import { useContext } from 'react';
 
 function App() {
-  // const authCtx = useContext(AuthContext);
+  const authCtx = useContext(AuthContext);
 
   return (
     <Router>
@@ -31,6 +31,10 @@ function App() {
         </Route>
         <Route exact path="/Home">
           <Redirect to={"/LoginPage"} />
+        </Route>
+        <Route exact path="/">
+          {authCtx.isLoggedIn && <Redirect to={"/AddExpenseDetails"} />}
+          {!authCtx.isLoggedIn && <Redirect to={"/LoginPage"} />}
         </Route>
         <Route exact path="/verify-email">
           <VerificationPage/>
