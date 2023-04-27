@@ -12,7 +12,7 @@ const CompleteProfile = () => {
       {
         method: "POST",
         body: JSON.stringify({
-          idToken: localStorage.getItem("token"),
+          idToken: localStorage.getItem("token2"),
         }),
         headers: {
           "Content-Type": "application/json",

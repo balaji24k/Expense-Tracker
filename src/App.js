@@ -9,10 +9,13 @@ import VerificationPage from './Components/Verificationpage';
 import AddExpenseDetails from './Components/AddExpenses';
 import AuthContext from './Store/AuthContext';
 import { useContext } from 'react';
+import { useSelector } from 'react-redux';
 
 function App() {
   const authCtx = useContext(AuthContext);
-  console.log(authCtx.isLoggedIn, "inAppJs")
+  console.log(authCtx.isLoggedIn, "inAppJs");
+
+  const isAuthenticated = useSelector((state) => state.auth.isAuthenticated);
 
   return (
     <Router>
