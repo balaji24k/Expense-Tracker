@@ -8,19 +8,57 @@ import { authActions } from "../Store/authSlice";
 import { useSelector } from "react-redux";
 import authSlice from "../Store/authSlice";
 import { useHistory } from "react-router-dom";
+import { expenseActions } from "../Store/expenseSlice";
+import { Button } from "react-bootstrap";
+import { saveAs } from "file-saver";
 
 const FirstPageDetails = () => {
   // const authCtx = useContext(AuthContext);
   const isPremium = useSelector((state) => state.expenses.showPremium);
+
+  const receivedData = useSelector((state) => state.expenses.receivedData);
+  console.log(receivedData);
   const dispatch = useDispatch();
   const history = useHistory();
 
   const isAuthenticated = useSelector((state) => state.auth.isAuthenticated);
 
+  const downloadExpenses = () => {
+    // Create a CSV string from the received data
+    const csv =
+      "Category,Description,Amount\n" +
+      Object.values(receivedData)
+        .map(
+          ({ category, description, amount }) =>
+            `${category},${description},${amount}`
+        )
+        .join("\n");
+
+    // Create a new blob with the CSV data
+    const blob = new Blob([csv], { type: "text/csv;charset=utf-8" });
+
+    // Save the blob as a file with the name "expenses.csv"
+    saveAs(blob, "expenses.csv");
+  };
+
+  const premiumClickHandler = () => {
+    localStorage.setItem("twoButtons", true);
+    window.location.reload();
+  };
+  const isPremiumClicked = (localStorage.getItem("twoButtons")==="true");
+
   const logout = () => {
     // authCtx.logout();
     dispatch(authActions.logout());
+    localStorage.setItem("twoButtons", false);
+    localStorage.removeItem("dark or not");
   };
+
+  const changeToDark = () => {
+    dispatch(expenseActions.toggleDark());
+  };
+
+  console.log(useSelector((state) => state.expenses.showDark));
 
 
   return (
@@ -74,14 +112,30 @@ const FirstPageDetails = () => {
               LOGOUT
             </NavLink>
           )}
-          {isPremium && (
+          {isAuthenticated && isPremium && !isPremiumClicked && (
             <NavLink
-              to="/premium"
+              to="/AddExpenseDetails"
               className={classes.font}
               style={{ color: "Red" }}
+              onClick={premiumClickHandler}
             >
               Activate Premium
             </NavLink>
+          )}
+           {isAuthenticated && isPremium && isPremiumClicked && (
+            <NavLink
+              className={classes.font}
+              to="/AddExpenseDetails"
+              onClick={changeToDark}
+            >
+              Toggle dark/light theme
+            </NavLink>
+          )}
+
+          {isAuthenticated && isPremium && isPremiumClicked && (
+            <Button variant="primary" onClick={downloadExpenses}>
+              Download Expenses
+            </Button>
           )}
         </Nav>
       </Container>

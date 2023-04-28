@@ -14,6 +14,7 @@ const AfterLogin = () => {
         </h4>
         <hr />
       </div>
+      <div></div>
     </>
   );
 };

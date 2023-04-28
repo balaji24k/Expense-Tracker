@@ -2,6 +2,8 @@ import { createSlice } from "@reduxjs/toolkit";
 
 const initialExpenseState = {
   showPremium: localStorage.getItem("isPremium") === true,
+  showDark: localStorage.getItem("dark or not") === "true",
+  receivedData: {},
 };
 
 const expenseSlice = createSlice({
@@ -16,6 +18,15 @@ const expenseSlice = createSlice({
     notPremium(state) {
       state.showPremium = false;
       localStorage.setItem("isPremium", false);
+    },
+    receivedData(state, action) {
+      state.receivedData = action.payload;
+    },
+
+    toggleDark(state) {
+      state.showDark = !state.showDark;
+      localStorage.setItem("dark or not", state.showDark);
+      window.location.reload();
     },
   },
 });
